@@ -1,6 +1,6 @@
 <?php
 
-namespace RGilyov\RTrees;
+namespace RGilyov\Trees;
 
 class RecursiveRefException extends \Exception
 {

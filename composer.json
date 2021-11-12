@@ -3,7 +3,8 @@
     "description": "Handle trees and tries (search, traverse, build, transform)",
     "type": "library",
     "require-dev": {
-        "phpunit/phpunit": "9.5.10"
+        "phpunit/phpunit": "9.5.10",
+        "phpbench/phpbench": "^1.2"
     },
     "keywords": [
         "tree",
@@ -26,6 +27,11 @@
     "autoload" : {
         "psr-4" : {
             "RGilyov\\Trees\\": ["src"]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RGilyov\\Trees\\Test\\": "tests/"
         }
     },
     "minimum-stability": "dev"

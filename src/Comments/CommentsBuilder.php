@@ -2,15 +2,12 @@
 
 namespace RGilyov\Trees\Comments;
 
-use RGilyov\RTrees\Comments\DuplicateElementsException;
-use RGilyov\RTrees\RecursiveRefException;
-
 final class CommentsBuilder implements CommentsBuilderInterface
 {
     /**
      * @param CommentInterface $root
      * @param CommentInterface[] $comments
-     * @throws RecursiveRefException
+     * @throws DuplicateElementsException
      */
     public function buildTree(CommentInterface $root, array $comments)
     {
@@ -23,21 +20,27 @@ final class CommentsBuilder implements CommentsBuilderInterface
      * @param CommentInterface $root
      * @param CommentInterface[] $comments
      * @param array $memo
-     * @throws RecursiveRefException
+     * @throws DuplicateElementsException
      */
     private function buildTreeUtil(CommentInterface $root, array $comments, array $memo)
     {
         $children = [];
 
-        foreach ($comments as $child) {
+        foreach ($comments as $key => $child) {
             if ($child->getParentID() === $root->getID()) {
                 if (isset($memo[$child->getID()])) {
-                    throw new RecursiveRefException("Recursive Ref {$child->getID()} and {$root->getID()}");
+                    throw new DuplicateElementsException("Duplicate elements primary id: {$child->getID()}");
                 }
 
                 $memo[$child->getID()] = true;
 
                 $children[] = $child;
+
+                /*
+                 * All comments have unique ID thus there is zero sense to
+                 * pass the full comment collection further to recursive build.
+                 */
+                unset($comments[$key]);
             }
         }
 
