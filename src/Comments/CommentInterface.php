@@ -17,10 +17,10 @@ interface CommentInterface
     /**
      * @return int|string
      */
-    public function getID();
+    public function getId();
 
     /**
      * @return int|string
      */
-    public function getParentID();
+    public function getParentId();
 }

@@ -11,7 +11,7 @@ final class CommentsBuilder implements CommentsBuilderInterface
      */
     public function buildTree(CommentInterface $root, array $comments)
     {
-        $memo = [$root->getID() => true];
+        $memo = [$root->getId() => true];
 
         $this->buildTreeUtil($root, $comments, $memo);
     }
@@ -27,12 +27,12 @@ final class CommentsBuilder implements CommentsBuilderInterface
         $children = [];
 
         foreach ($comments as $key => $child) {
-            if ($child->getParentID() === $root->getID()) {
-                if (isset($memo[$child->getID()])) {
-                    throw new DuplicateElementsException("Duplicate elements primary id: {$child->getID()}");
+            if ($child->getParentId() === $root->getId()) {
+                if (isset($memo[$child->getId()])) {
+                    throw new DuplicateElementsException("Duplicate elements primary id: {$child->getId()}");
                 }
 
-                $memo[$child->getID()] = true;
+                $memo[$child->getId()] = true;
 
                 $children[] = $child;
 
@@ -71,15 +71,15 @@ final class CommentsBuilder implements CommentsBuilderInterface
      */
     private function traverseUtil(CommentInterface $comment, callable $handle, $memo)
     {
-        if (isset($memo[$comment->getID()])) {
-            throw new DuplicateElementsException("Duplicate elements primary id: {$comment->getID()}");
+        if (isset($memo[$comment->getId()])) {
+            throw new DuplicateElementsException("Duplicate elements primary id: {$comment->getId()}");
         }
 
         if ($handle($comment) === false) {
             return;
         }
 
-        $memo[$comment->getID()] = true;
+        $memo[$comment->getId()] = true;
 
         foreach ($comment->getChildren() as $child) {
             $this->traverseUtil($child, $handle, $memo);

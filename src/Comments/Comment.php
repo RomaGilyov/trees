@@ -5,14 +5,14 @@ namespace RGilyov\Trees\Comments;
 final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregate
 {
     /**
-     * @var int|string
+     * @var string
      */
-    private $id;
+    const ID_KEY = 'id';
 
     /**
-     * @var int|string
+     * @var string
      */
-    private $parentId;
+    const PARENT_ID_KEY = 'parent_id';
 
     /**
      * @var array
@@ -25,17 +25,28 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
     private $children = [];
 
     /**
-     * @param $id
-     * @param $parentId
      * @param array $data
+     * @throws InvalidIdException
      */
-    public function __construct($id, $parentId, array $data = [])
+    public function __construct(array $data = [])
     {
-        $this->id = $id;
+        $this->checkIdField($data, self::ID_KEY);
 
-        $this->parentId = $parentId;
+        $this->checkIdField($data, self::PARENT_ID_KEY);
 
         $this->data = $data;
+    }
+
+    /**
+     * @param array $data
+     * @param $field
+     * @throws InvalidIdException
+     */
+    private function checkIdField(array $data, $field)
+    {
+        if (! array_key_exists($field, $data)) {
+            throw new InvalidIdException("data must contain `$field`");
+        }
     }
 
     /**
@@ -62,7 +73,7 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
      * @param CommentInterface $comment
      * @return CommentInterface
      */
-    public function setChild(CommentInterface $comment): CommentInterface
+    public function setChild(CommentInterface $comment) : CommentInterface
     {
         $this->children[] = $comment;
 
@@ -72,7 +83,7 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
     /**
      * @return CommentInterface[]
      */
-    public function getChildren(): array
+    public function getChildren() : array
     {
         return $this->children;
     }
@@ -80,7 +91,7 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
     /**
      * @return int|string
      */
-    public function getID()
+    public function getId()
     {
         return $this->id;
     }
@@ -88,9 +99,9 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
     /**
      * @return int|string
      */
-    public function getParentID()
+    public function getParentId()
     {
-        return $this->parentId;
+        return $this->parent_id;
     }
 
     /* ArrayAccess */
@@ -99,9 +110,9 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
      * @param mixed $offset
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset) : bool
     {
-        return key_exists($offset, $this->data);
+        return array_key_exists($offset, $this->data);
     }
 
     /**
@@ -139,8 +150,30 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
     /**
      * @return \ArrayIterator
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->data);
+    }
+
+    /* util */
+
+    /**
+     * @return array
+     */
+    public function toArray() : array
+    {
+        $data = $this->data;
+
+        $children = [];
+
+        foreach ($this->children as $child) {
+            $children[] = $child->toArray();
+        }
+
+        if (count($children) > 0) {
+            $data['children'] = $children;
+        }
+
+        return $data;
     }
 }

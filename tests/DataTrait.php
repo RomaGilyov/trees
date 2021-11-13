@@ -29,13 +29,14 @@ trait DataTrait
 
     /**
      * @return \RGilyov\Trees\Comments\CommentInterface[]
+     * @throws \RGilyov\Trees\Comments\InvalidIdException
      */
     private function buildTestData()
     {
         $comments = [];
 
         foreach ($this->testData as $comment) {
-            $comments[] = new \RGilyov\Trees\Comments\Comment($comment['id'], $comment['parent_id'], $comment);
+            $comments[] = new \RGilyov\Trees\Comments\Comment($comment);
         }
 
         return $comments;

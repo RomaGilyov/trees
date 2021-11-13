@@ -27,6 +27,12 @@ class CommentsTest extends TestCase
             '3d level comment',
             $root->getChildren()[1]->getChildren()[1]->getChildren()[0]['value']
         );
+
+        // To Array
+
+        $data = $root->toArray();
+
+        $this->assertEquals('3d level comment', $data['children'][1]['children'][1]['children'][0]['value']);
     }
 
     /** @test */
@@ -34,7 +40,7 @@ class CommentsTest extends TestCase
     {
         $comments = $this->buildTestData();
 
-        $comments[] = new \RGilyov\Trees\Comments\Comment(1, 1, ['value' => 'rec ref']);
+        $comments[] = new \RGilyov\Trees\Comments\Comment(['id' => 1, 'parent_id' => 2, 'value' => 'duplicate']);
 
         $commentsBuilder = new \RGilyov\Trees\Comments\CommentsBuilder();
 
