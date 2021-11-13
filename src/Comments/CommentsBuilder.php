@@ -5,6 +5,22 @@ namespace RGilyov\Trees\Comments;
 final class CommentsBuilder implements CommentsBuilderInterface
 {
     /**
+     * @var callable
+     */
+    private $sortHandler;
+
+    /**
+     * @param callable $handler
+     * @return $this
+     */
+    public function sort(callable $handler) : CommentsBuilder
+    {
+        $this->sortHandler = $handler;
+
+        return $this;
+    }
+
+    /**
      * @param CommentInterface $root
      * @param CommentInterface[] $comments
      * @throws DuplicateElementsException
@@ -42,6 +58,10 @@ final class CommentsBuilder implements CommentsBuilderInterface
                  */
                 unset($comments[$key]);
             }
+        }
+
+        if (is_callable($this->sortHandler) && count($children) > 0) {
+            usort($children, $this->sortHandler);
         }
 
         foreach ($children as $child) {

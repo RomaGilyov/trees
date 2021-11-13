@@ -4,6 +4,7 @@ namespace RGilyov\Trees\Test;
 
 use PHPUnit\Framework\TestCase;
 use RGilyov\Trees\Comments\Comment;
+use RGilyov\Trees\Comments\CommentInterface;
 use RGilyov\Trees\Comments\CommentsBuilder;
 use RGilyov\Trees\Comments\DuplicateElementsException;
 use RGilyov\Trees\Comments\InvalidIdException;
@@ -36,6 +37,24 @@ class CommentsTest extends TestCase
         $data = $root->toArray();
 
         $this->assertEquals('3d level comment', $data['children'][1]['children'][1]['children'][0]['value']);
+    }
+
+    public function testTreeBuildWithSort()
+    {
+        $comments = $this->buildTestData();
+
+        $commentsBuilder = new CommentsBuilder();
+
+        $root = $comments[0];
+
+        /*
+         * Sort by id desc
+         */
+        $commentsBuilder->sort(function (CommentInterface $a, CommentInterface $b) {
+            return $b->getId() <=> $a->getId();
+        })->buildTree($root, $comments);
+
+        $this->assertEquals(8, $root->getChildren()[0]->getChildren()[0]->getChildren()[0]->getId());
     }
 
     /** @test */
