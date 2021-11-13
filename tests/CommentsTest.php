@@ -16,7 +16,7 @@ class CommentsTest extends TestCase
     /** @test */
     public function testTreeBuild()
     {
-        $comments = $this->buildTestData();
+        $comments = $this->commentsTestData();
 
         $commentsBuilder = new CommentsBuilder();
 
@@ -41,7 +41,7 @@ class CommentsTest extends TestCase
 
     public function testTreeBuildWithSort()
     {
-        $comments = $this->buildTestData();
+        $comments = $this->commentsTestData();
 
         $commentsBuilder = new CommentsBuilder();
 
@@ -60,7 +60,7 @@ class CommentsTest extends TestCase
     /** @test */
     public function testDuplicateDataErrorTreeBuild()
     {
-        $comments = $this->buildTestData();
+        $comments = $this->commentsTestData();
 
         $comments[] = new Comment(['id' => 1, 'parent_id' => 2, 'value' => 'duplicate']);
 
