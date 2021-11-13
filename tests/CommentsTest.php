@@ -24,12 +24,12 @@ class CommentsTest extends TestCase
 
         $commentsBuilder->buildTree($root, $comments);
 
-        $this->assertEquals('1st level comment', $root->getChildren()[1]['value']);
-        $this->assertEquals('2nd level comment', $root->getChildren()[1]->getChildren()[1]['value']);
+        $this->assertEquals('1st level comment', $root->getChildren()[1]->value);
+        $this->assertEquals('2nd level comment', $root->getChildren()[1]->getChildren()[1]->value);
 
         $this->assertEquals(
             '3d level comment',
-            $root->getChildren()[1]->getChildren()[1]->getChildren()[0]['value']
+            $root->getChildren()[1]->getChildren()[1]->getChildren()[0]->value
         );
 
         // To Array
@@ -39,6 +39,7 @@ class CommentsTest extends TestCase
         $this->assertEquals('3d level comment', $data['children'][1]['children'][1]['children'][0]['value']);
     }
 
+    /** @test */
     public function testTreeBuildWithSort()
     {
         $comments = $this->commentsTestData();

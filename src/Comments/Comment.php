@@ -2,7 +2,10 @@
 
 namespace RGilyov\Trees\Comments;
 
-final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregate
+use RGilyov\Trees\TreeToArrayInterface;
+use RGilyov\Trees\TreeTraversableInterface;
+
+final class Comment implements CommentInterface, TreeToArrayInterface, TreeTraversableInterface
 {
     /**
      * @var string
@@ -52,7 +55,7 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
      */
     public function __get($offset)
     {
-        return $this->offsetGet($offset);
+        return array_key_exists($offset, $this->data) ? $this->data[$offset] : null;
     }
 
     /**
@@ -61,7 +64,7 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
      */
     public function __set($offset, $value)
     {
-        $this->offsetSet($offset, $value);
+        $this->data[$offset] = $value;
     }
 
     /* CommentInterface */
@@ -101,47 +104,6 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
         return $this->parent_id;
     }
 
-    /* ArrayAccess */
-
-    /**
-     * @param mixed $offset
-     * @return bool
-     */
-    public function offsetExists($offset) : bool
-    {
-        return array_key_exists($offset, $this->data);
-    }
-
-    /**
-     * @param mixed $offset
-     * @return mixed|null
-     */
-    public function offsetGet($offset)
-    {
-        if (! $this->offsetExists($offset)) {
-            return null;
-        }
-
-        return $this->data[$offset];
-    }
-
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->data[$offset] = $value;
-    }
-
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->data[$offset]);
-    }
-
     /* util */
 
     /**
@@ -176,12 +138,5 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
         foreach ($this->getChildren() as $child) {
             $child->traverse($handler);
         }
-    }
-
-    /* IteratorAggregate */
-
-    public function getIterator() : \ArrayIterator
-    {
-        return new \ArrayIterator($this->data);
     }
 }

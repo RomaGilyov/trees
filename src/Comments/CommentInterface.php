@@ -2,9 +2,7 @@
 
 namespace RGilyov\Trees\Comments;
 
-use RGilyov\Trees\TreeTraversableInterface;
-
-interface CommentInterface extends TreeTraversableInterface
+interface CommentInterface
 {
     /**
      * @param CommentInterface $comment
