@@ -1,6 +1,6 @@
 <?php
 
-namespace RGilyov\Trees\Comments;
+namespace RGilyov\Trees\Exceptions;
 
 class DuplicateElementsException extends \Exception
 {

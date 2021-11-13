@@ -2,10 +2,12 @@
 
 namespace RGilyov\Trees\Comments;
 
-use RGilyov\Trees\TreeToArrayInterface;
-use RGilyov\Trees\TreeTraversableInterface;
+use RGilyov\Trees\Exceptions\InvalidIdException;
+use RGilyov\Trees\Interfaces\CommentNode;
+use RGilyov\Trees\Interfaces\TreeToArray;
+use RGilyov\Trees\Interfaces\TreeTraversable;
 
-final class Comment implements CommentInterface, TreeToArrayInterface, TreeTraversableInterface
+final class Comment implements CommentNode, TreeToArray, TreeTraversable
 {
     /**
      * @var string
@@ -28,7 +30,7 @@ final class Comment implements CommentInterface, TreeToArrayInterface, TreeTrave
     private $data;
 
     /**
-     * @var CommentInterface[]
+     * @var CommentNode[]
      */
     private $children = [];
 
@@ -70,10 +72,10 @@ final class Comment implements CommentInterface, TreeToArrayInterface, TreeTrave
     /* CommentInterface */
 
     /**
-     * @param CommentInterface $comment
-     * @return CommentInterface
+     * @param CommentNode $comment
+     * @return CommentNode
      */
-    public function setChild(CommentInterface $comment) : CommentInterface
+    public function setChild(CommentNode $comment) : CommentNode
     {
         $this->children[] = $comment;
 
@@ -81,7 +83,7 @@ final class Comment implements CommentInterface, TreeToArrayInterface, TreeTrave
     }
 
     /**
-     * @return CommentInterface[]
+     * @return CommentNode[]
      */
     public function getChildren() : array
     {
@@ -109,14 +111,14 @@ final class Comment implements CommentInterface, TreeToArrayInterface, TreeTrave
     /**
      * @return array
      */
-    public function toArray() : array
+    public function treeToArray() : array
     {
         $data = $this->data;
 
         $children = [];
 
-        foreach ($this->children as $child) {
-            $children[] = $child->toArray();
+        foreach ($this->getChildren() as $child) {
+            $children[] = $child->treeToArray();
         }
 
         if (count($children) > 0) {

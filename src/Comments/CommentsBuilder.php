@@ -2,7 +2,11 @@
 
 namespace RGilyov\Trees\Comments;
 
-final class CommentsBuilder implements CommentsBuilderInterface
+use RGilyov\Trees\Exceptions\DuplicateElementsException;
+use RGilyov\Trees\Interfaces\CommentNode;
+use RGilyov\Trees\Interfaces\CommentsTreeBuilder;
+
+final class CommentsBuilder implements CommentsTreeBuilder
 {
     /**
      * @var callable
@@ -21,11 +25,11 @@ final class CommentsBuilder implements CommentsBuilderInterface
     }
 
     /**
-     * @param CommentInterface $root
-     * @param CommentInterface[] $comments
+     * @param CommentNode $root
+     * @param CommentNode[] $comments
      * @throws DuplicateElementsException
      */
-    public function buildTree(CommentInterface $root, array $comments)
+    public function buildTree(CommentNode $root, array $comments)
     {
         $memo = [$root->getId() => true];
 
@@ -33,12 +37,12 @@ final class CommentsBuilder implements CommentsBuilderInterface
     }
 
     /**
-     * @param CommentInterface $root
-     * @param CommentInterface[] $comments
+     * @param CommentNode $root
+     * @param CommentNode[] $comments
      * @param array $memo
      * @throws DuplicateElementsException
      */
-    private function buildTreeUtil(CommentInterface $root, array $comments, array $memo)
+    private function buildTreeUtil(CommentNode $root, array $comments, array $memo)
     {
         $children = [];
 

@@ -3,6 +3,7 @@
 namespace RGilyov\Trees\Test;
 
 use RGilyov\Trees\Comments\Comment;
+use RGilyov\Trees\Exceptions\InvalidIdException;
 
 trait DataTrait
 {
@@ -16,8 +17,8 @@ trait DataTrait
      *             7
      *             8
      *
-     * @return \RGilyov\Trees\Comments\CommentInterface[]
-     * @throws \RGilyov\Trees\Comments\InvalidIdException
+     * @return \RGilyov\Trees\Comments\Comment[]
+     * @throws InvalidIdException
      */
     private function commentsTestData()
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace RGilyov\Trees;
+namespace RGilyov\Trees\Interfaces;
 
-interface TreeTraversableInterface
+interface TreeTraversable
 {
     /**
      * @param callable $handler
