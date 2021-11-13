@@ -30,23 +30,15 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
      */
     public function __construct(array $data = [])
     {
-        $this->checkIdField($data, self::ID_KEY);
+        if (! isset($data[self::ID_KEY]) || (! is_string($data[self::ID_KEY]) && ! is_numeric($data[self::ID_KEY]))) {
+            throw new InvalidIdException("data must contain string or numeric " . self::ID_KEY);
+        }
 
-        $this->checkIdField($data, self::PARENT_ID_KEY);
+        if (! array_key_exists(self::PARENT_ID_KEY, $data)) {
+            throw new InvalidIdException("data must contain " . self::PARENT_ID_KEY);
+        }
 
         $this->data = $data;
-    }
-
-    /**
-     * @param array $data
-     * @param $field
-     * @throws InvalidIdException
-     */
-    private function checkIdField(array $data, $field)
-    {
-        if (! array_key_exists($field, $data)) {
-            throw new InvalidIdException("data must contain `$field`");
-        }
     }
 
     /**
