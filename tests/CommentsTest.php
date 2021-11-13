@@ -3,9 +3,9 @@
 namespace RGilyov\Trees\Test;
 
 use PHPUnit\Framework\TestCase;
-use RGilyov\Trees\Comments\Comment;
+use RGilyov\Trees\Comments\Node;
 use RGilyov\Trees\Interfaces\CommentNode;
-use RGilyov\Trees\Comments\CommentsBuilder;
+use RGilyov\Trees\Comments\TreeBuilder;
 use RGilyov\Trees\Exceptions\DuplicateElementsException;
 use RGilyov\Trees\Exceptions\InvalidIdException;
 
@@ -18,7 +18,7 @@ class CommentsTest extends TestCase
     {
         $comments = $this->commentsTestData();
 
-        $commentsBuilder = new CommentsBuilder();
+        $commentsBuilder = new TreeBuilder();
 
         $root = $comments[0];
 
@@ -44,7 +44,7 @@ class CommentsTest extends TestCase
     {
         $comments = $this->commentsTestData();
 
-        $commentsBuilder = new CommentsBuilder();
+        $commentsBuilder = new TreeBuilder();
 
         $root = $comments[0];
 
@@ -63,9 +63,9 @@ class CommentsTest extends TestCase
     {
         $comments = $this->commentsTestData();
 
-        $comments[] = new Comment(['id' => 1, 'parent_id' => 2, 'value' => 'duplicate']);
+        $comments[] = new Node(['id' => 1, 'parent_id' => 2, 'value' => 'duplicate']);
 
-        $commentsBuilder = new CommentsBuilder();
+        $commentsBuilder = new TreeBuilder();
 
         $root = $comments[0];
 
@@ -79,11 +79,11 @@ class CommentsTest extends TestCase
     {
         $this->expectException(InvalidIdException::class);
 
-        new Comment(['id' => null, 'parent_id' => 2, 'value' => 'duplicate']);
+        new Node(['id' => null, 'parent_id' => 2, 'value' => 'duplicate']);
 
         $this->expectException(InvalidIdException::class);
 
-        new Comment(['id' => 1, 'value' => 'duplicate']);
+        new Node(['id' => 1, 'value' => 'duplicate']);
     }
 
     /** @test */
@@ -91,7 +91,7 @@ class CommentsTest extends TestCase
     {
         $comments = $this->commentsTestData();
 
-        $commentsBuilder = new CommentsBuilder();
+        $commentsBuilder = new TreeBuilder();
 
         $root = $comments[0];
 

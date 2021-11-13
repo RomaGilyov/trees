@@ -6,7 +6,7 @@ use RGilyov\Trees\Exceptions\DuplicateElementsException;
 use RGilyov\Trees\Interfaces\CommentNode;
 use RGilyov\Trees\Interfaces\CommentsTreeBuilder;
 
-final class CommentsBuilder implements CommentsTreeBuilder
+final class TreeBuilder implements CommentsTreeBuilder
 {
     /**
      * @var callable
@@ -17,7 +17,7 @@ final class CommentsBuilder implements CommentsTreeBuilder
      * @param callable $handler
      * @return $this
      */
-    public function sort(callable $handler) : CommentsBuilder
+    public function sort(callable $handler) : TreeBuilder
     {
         $this->sortHandler = $handler;
 

@@ -8,7 +8,12 @@ class CommentsBench
 {
     use DataTrait;
 
-    public function benchTreeBuild()
+    public function benchTrieSearch()
+    {
+
+    }
+
+    public function benchLoopSearch()
     {
 
     }

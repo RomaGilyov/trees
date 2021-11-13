@@ -2,7 +2,7 @@
 
 namespace RGilyov\Trees\Interfaces;
 
-interface CommentsTreeBuilder extends TreeBuilder
+interface CommentsTreeBuilder
 {
     /**
      * @param CommentNode $root

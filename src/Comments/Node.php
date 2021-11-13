@@ -7,7 +7,7 @@ use RGilyov\Trees\Interfaces\CommentNode;
 use RGilyov\Trees\Interfaces\TreeToArray;
 use RGilyov\Trees\Interfaces\TreeTraversable;
 
-final class Comment implements CommentNode, TreeToArray, TreeTraversable
+final class Node implements CommentNode, TreeToArray, TreeTraversable
 {
     /**
      * @var string
@@ -18,11 +18,6 @@ final class Comment implements CommentNode, TreeToArray, TreeTraversable
      * @var string
      */
     const PARENT_ID_KEY = 'parent_id';
-
-    /**
-     * @var int
-     */
-    private $position = 0;
 
     /**
      * @var array
@@ -68,8 +63,6 @@ final class Comment implements CommentNode, TreeToArray, TreeTraversable
     {
         $this->data[$offset] = $value;
     }
-
-    /* CommentInterface */
 
     /**
      * @param CommentNode $comment
