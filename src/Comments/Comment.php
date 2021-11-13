@@ -15,6 +15,11 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
     const PARENT_ID_KEY = 'parent_id';
 
     /**
+     * @var int
+     */
+    private $position = 0;
+
+    /**
      * @var array
      */
     private $data;
@@ -137,16 +142,6 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
         unset($this->data[$offset]);
     }
 
-    /* ArrayIterator */
-
-    /**
-     * @return \ArrayIterator
-     */
-    public function getIterator() : \ArrayIterator
-    {
-        return new \ArrayIterator($this->data);
-    }
-
     /* util */
 
     /**
@@ -167,5 +162,26 @@ final class Comment implements CommentInterface, \ArrayAccess, \IteratorAggregat
         }
 
         return $data;
+    }
+
+    /**
+     * @param callable $handler
+     */
+    public function traverse(callable $handler)
+    {
+        if ($handler($this) === false) {
+            return;
+        }
+
+        foreach ($this->getChildren() as $child) {
+            $child->traverse($handler);
+        }
+    }
+
+    /* IteratorAggregate */
+
+    public function getIterator() : \ArrayIterator
+    {
+        return new \ArrayIterator($this->data);
     }
 }

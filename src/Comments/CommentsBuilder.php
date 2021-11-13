@@ -70,39 +70,4 @@ final class CommentsBuilder implements CommentsBuilderInterface
             $root->setChild($child);
         }
     }
-
-    /**
-     * @param CommentInterface $comment
-     * @param callable $handle
-     * @throws DuplicateElementsException
-     */
-    public function traverse(CommentInterface $comment, callable $handle)
-    {
-        $memo = [];
-
-        $this->traverseUtil($comment, $handle, $memo);
-    }
-
-    /**
-     * @param CommentInterface $comment
-     * @param callable $handle
-     * @param $memo
-     * @throws DuplicateElementsException
-     */
-    private function traverseUtil(CommentInterface $comment, callable $handle, $memo)
-    {
-        if (isset($memo[$comment->getId()])) {
-            throw new DuplicateElementsException("Duplicate elements primary id: {$comment->getId()}");
-        }
-
-        if ($handle($comment) === false) {
-            return;
-        }
-
-        $memo[$comment->getId()] = true;
-
-        foreach ($comment->getChildren() as $child) {
-            $this->traverseUtil($child, $handle, $memo);
-        }
-    }
 }

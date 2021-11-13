@@ -84,4 +84,28 @@ class CommentsTest extends TestCase
 
         new Comment(['id' => 1, 'value' => 'duplicate']);
     }
+
+    /** @test */
+    public function testTraverse()
+    {
+        $comments = $this->commentsTestData();
+
+        $commentsBuilder = new CommentsBuilder();
+
+        $root = $comments[0];
+
+        $commentsBuilder->buildTree($root, $comments);
+
+        $c = [];
+
+        $root->traverse(function (CommentInterface $comment) use (&$c) {
+            $comment->changed = 1;
+
+            $c[] = $comment->getId();
+        });
+
+        $this->assertCount(8, $c);
+
+        $this->assertEquals(1, $root->getChildren()[1]->getChildren()[0]->changed);
+    }
 }

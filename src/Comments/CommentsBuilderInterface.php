@@ -9,11 +9,4 @@ interface CommentsBuilderInterface
      * @param array $comments
      */
     public function buildTree(CommentInterface $root, array $comments);
-
-    /**
-     * @param CommentInterface $comment
-     * @param callable $handle
-     * @return void
-     */
-    public function traverse(CommentInterface $comment, callable $handle);
 }
