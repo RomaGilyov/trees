@@ -9,6 +9,11 @@ use RGilyov\Trees\Exceptions\InvalidIdException;
 trait DataTrait
 {
     /**
+     * @var array
+     */
+    private static $ips = [];
+
+    /**
      * 1 ->
      *     2
      *     3 ->
@@ -76,5 +81,35 @@ trait DataTrait
         $data[] = new GenealogyNode(['id' => 9, 'mother_id' => null, 'father_id' => 2, 'name' => 'test 9']);
 
         return $data;
+    }
+
+    /**
+     * Test IPs:
+     *
+     * 180.150.142.140
+     * 150.146.137.139
+     * 128.145.139.135
+     *
+     * @return array
+     */
+    private function trieTestData() : array
+    {
+        if (! empty(static::$ips)) {
+            return static::$ips;
+        }
+
+        $ips = [];
+
+        for ($first = 128; $first <= 180; $first++) {
+            for ($second = 128; $second <= 150; $second++) {
+                for ($third = 128; $third <= 150; $third++) {
+                    for ($fourth = 128; $fourth <= 150; $fourth++) {
+                        $ips[] = "$first.$second.$third.$fourth";
+                    }
+                }
+            }
+        }
+
+        return static::$ips = $ips;
     }
 }
